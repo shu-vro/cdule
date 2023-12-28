@@ -26,31 +26,42 @@ export default function Sidebar() {
         },
     ];
     return (
-        <div
-            className={cn(
-                "nav fixed top-0 h-full w-80 bg-[#333] transition-[left]",
-                value ? "left-0" : "-left-80"
-            )}>
-            <button
-                type="button"
-                onClick={() => {
+        <>
+            <div
+                className={cn(
+                    "nav fixed top-0 h-full w-80 bg-[#333] transition-[left] z-10",
+                    value ? "left-0" : "-left-80"
+                )}>
+                <button
+                    type="button"
+                    onClick={() => {
+                        setValue(prev => !prev);
+                    }}
+                    className="capitalize text-xl rounded-full bg-neutral-600 px-4 py-2 my-3 font-bold flex justify-center items-center pl-2">
+                    <FaAngleLeft className="mr-2" />
+                    close
+                </button>
+                <ul className="w-full list-none m-0 text-2xl">
+                    {list.map(obj => (
+                        <li
+                            key={obj.name}
+                            className="px-3 py-2 bg-neutral-600 my-1 mx-2 rounded capitalize">
+                            <Link className="w-full block" href={obj.to}>
+                                {obj.name}
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            <div
+                onClick={e => {
+                    e.stopPropagation();
                     setValue(prev => !prev);
                 }}
-                className="capitalize text-xl rounded-full bg-neutral-600 px-4 py-2 my-3 font-bold flex justify-center items-center pl-2">
-                <FaAngleLeft className="mr-2" />
-                close
-            </button>
-            <ul className="w-full list-none m-0 text-2xl">
-                {list.map(obj => (
-                    <li
-                        key={obj.name}
-                        className="px-3 py-2 bg-neutral-600 my-1 mx-2 rounded capitalize">
-                        <Link className="w-full block" href={obj.to}>
-                            {obj.name}
-                        </Link>
-                    </li>
-                ))}
-            </ul>
-        </div>
+                className={cn(
+                    "overlay fixed top-0 left-0 w-full h-full bg-[#000000] z-[9]",
+                    value ? "opacity-40" : "hidden"
+                )}></div>
+        </>
     );
 }

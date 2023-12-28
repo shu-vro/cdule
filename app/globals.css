@@ -27,3 +27,16 @@ th {
 tr:nth-child(even) {
     background-color: #444;
 }
+
+.add-schedule {
+    animation: grow 150ms linear 1 forwards;
+}
+
+@keyframes grow {
+    from {
+        height: 0%;
+    }
+    to {
+        height: fit-content;
+    }
+}

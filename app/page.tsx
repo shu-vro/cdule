@@ -1,11 +1,30 @@
 "use client";
 
 import { MdPlaylistAdd } from "react-icons/md";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { set, entries } from "idb-keyval";
 
 export default function Home() {
     const parent = useRef<HTMLDivElement>(null);
     const [newField, setNewField] = useState(false);
+    const [time, setTime] = useState<string>("");
+    const [cause, setCause] = useState<string>("");
+    const [amount, setAmount] = useState<number>(0);
+    const [schedules, setSchedules] = useState<[IDBValidKey, any][]>([]);
+    const [refreshControl, setRefreshControl] = useState(0);
+
+    useEffect(() => {
+        (async () => {
+            let ent = await entries();
+            ent = ent.filter(el => {
+                return el[0]
+                    .toString()
+                    .startsWith(new Date().toLocaleDateString());
+            });
+            setSchedules(ent);
+        })();
+    }, [refreshControl]);
+
     return (
         <div className="p-3" ref={parent}>
             <div className="font-bold text-4xl flex justify-between items-center flex-row">
@@ -34,12 +53,16 @@ export default function Home() {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr hidden={!newField}>
+                    <tr hidden={!newField} className="add-schedule">
                         <td>
                             <input
                                 type="time"
                                 id="new_time"
                                 className="bg-inherit w-full"
+                                value={time}
+                                onChange={e => {
+                                    setTime(e.target.value);
+                                }}
                             />
                         </td>
                         <td>
@@ -48,6 +71,10 @@ export default function Home() {
                                 id="new_cause"
                                 className="bg-inherit w-full"
                                 placeholder="Create new cause"
+                                value={cause}
+                                onChange={e => {
+                                    setCause(e.target.value);
+                                }}
                             />
                         </td>
                         <td>
@@ -56,6 +83,10 @@ export default function Home() {
                                 id="new_amount"
                                 className="bg-inherit w-[calc(100%-30px)] inline-block"
                                 placeholder="Create new amount"
+                                value={amount}
+                                onChange={e => {
+                                    setAmount(Math.abs(+e.target.value));
+                                }}
                             />
                             <span className="ml-2">৳</span>
                         </td>
@@ -72,8 +103,16 @@ export default function Home() {
                                     Cancel
                                 </button>
                                 <button
-                                    onClick={() => {
+                                    onClick={async () => {
                                         setNewField(false);
+                                        let today =
+                                            new Date().toLocaleDateString();
+                                        await set(`${today} ${time}`, {
+                                            time: `${today} ${time}`,
+                                            cause,
+                                            amount,
+                                        } as ISchedule);
+                                        setRefreshControl(prev => prev + 1);
                                     }}
                                     className="inline-block bg-green-700 rounded-lg p-2">
                                     Save
@@ -81,17 +120,26 @@ export default function Home() {
                             </div>
                         </td>
                     </tr>
-                    {Array(30)
-                        .fill(true)
-                        .map((_, i) => {
-                            return (
-                                <tr key={i}>
-                                    <td>Time</td>
-                                    <td>Cause</td>
-                                    <td>Amount</td>
-                                </tr>
-                            );
-                        })}
+                    {schedules.map(([key, value]: [IDBValidKey, ISchedule]) => {
+                        return (
+                            <tr key={key as string}>
+                                <td className="w-1/3">
+                                    {new Date(value.time).toLocaleTimeString(
+                                        "en",
+                                        {
+                                            hour12: true,
+                                            timeStyle: "short",
+                                        }
+                                    )}
+                                </td>
+                                <td className="w-1/3">{value.cause}</td>
+                                <td className="w-1/3">
+                                    {value.amount}
+                                    <span className="ml-2">৳</span>
+                                </td>
+                            </tr>
+                        );
+                    })}
                 </tbody>
             </table>
         </div>
