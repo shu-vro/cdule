@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import { set, entries } from "idb-keyval";
 
 export default function Home() {
-    const parent = useRef<HTMLDivElement>(null);
     const [newField, setNewField] = useState(false);
     const [time, setTime] = useState<string>("");
     const [cause, setCause] = useState<string>("");
@@ -26,7 +25,7 @@ export default function Home() {
     }, [refreshControl]);
 
     return (
-        <div className="p-3" ref={parent}>
+        <div className="p-3">
             <div className="font-bold text-4xl flex justify-between items-center flex-row">
                 TODAY
                 <button
