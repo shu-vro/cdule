@@ -10,7 +10,7 @@ export default function Home() {
     const [time, setTime] = useState<string>("");
     const [cause, setCause] = useState<string>("");
     const [amount, setAmount] = useState<number>(0);
-    const [schedules, setSchedules] = useState<[IDBValidKey, any][]>([]);
+    const [schedules, setSchedules] = useState<[IDBValidKey, ISchedule][]>([]);
     const [refreshControl, setRefreshControl] = useState(0);
 
     useEffect(() => {
@@ -120,7 +120,7 @@ export default function Home() {
                             </div>
                         </td>
                     </tr>
-                    {schedules.map(([key, value]: [IDBValidKey, ISchedule]) => {
+                    {schedules.map(([key, value]) => {
                         return (
                             <tr key={key as string}>
                                 <td className="w-1/3">
@@ -142,6 +142,15 @@ export default function Home() {
                     })}
                 </tbody>
             </table>
+            <div className="flex justify-center items-center text-4xl">
+                <div className="grow"></div>
+                <span>
+                    Total:{" "}
+                    {schedules.reduce((prev, curr) => {
+                        return prev + curr[1].amount;
+                    }, 0)}
+                </span>
+            </div>
         </div>
     );
 }
