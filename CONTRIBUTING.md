@@ -24,4 +24,6 @@ however, they can be manually be downloaded which I didn't like (I'm lazy)
 3. Create your branch. The naming convension is `<your-name>/<issue-num>` if issue number is not applicable, you can simply put `<your-name>`. You must put your name in the branch name.
 4. Push your code into the branch and it will be reviewed
 
+Otherwise, if you have any feature request or issue in this app, you can visit the issue panel and submit an issue.
+
 *Finally, thanks for contributing this repository*
