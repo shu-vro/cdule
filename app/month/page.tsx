@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { entries } from "idb-keyval";
+import { getDatesInMonth } from "@/lib/utils";
 
-export default function Week() {
+export default function Month() {
     const [schedules, setSchedules] = useState<any[]>([]);
 
     useEffect(() => {
@@ -14,26 +15,7 @@ export default function Week() {
 
             const today = new Date();
             const currentMonth = today.getMonth();
-            const currentYear = today.getFullYear();
-
-            // Get the number of days in the current month
-            const daysInMonth = new Date(
-                currentYear,
-                currentMonth + 1,
-                0
-            ).getDate();
-
-            // Create an array to store the dates
-            const datesInMonth: (string | Date)[] = [];
-
-            // Iterate through each day of the month
-            for (let i = 1; i <= daysInMonth; i++) {
-                const date = new Date(currentYear, currentMonth, i);
-                const formattedDate = date.toLocaleDateString("en-US");
-                datesInMonth.push(formattedDate);
-            }
-
-            console.log(datesInMonth);
+            const datesInMonth = getDatesInMonth(currentMonth);
 
             for (const day in datesInMonth) {
                 let temp = ent.filter(el => {
