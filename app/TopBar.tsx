@@ -17,7 +17,7 @@ export default function TopBar() {
                 }}
             />
             <h1 className="font-bold flex flex-row justify-center items-center">
-                SCHE<span className="text-[#b16ced]">DULE</span>
+                C<span className="text-[#b16ced]">DULE</span>
                 <Image
                     src={favicon}
                     width={40}
