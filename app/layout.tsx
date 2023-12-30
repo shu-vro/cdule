@@ -10,8 +10,8 @@ const font = Montserrat({
     subsets: ["latin", "latin-ext"],
 });
 
-const APP_NAME = "SCHEDULE";
-const APP_DEFAULT_TITLE = "Schedule";
+const APP_NAME = "CDULE";
+const APP_DEFAULT_TITLE = "CDule";
 const APP_TITLE_TEMPLATE = "%s - for future";
 const APP_DESCRIPTION = "Schedule your daily life's spending";
 
