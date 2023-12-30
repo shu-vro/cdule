@@ -10,7 +10,7 @@ Chart.register(...registerables);
 export default function Stats() {
     const [schedules, setSchedules] = useState<any[]>([]);
     const [selectedDate, setSelectedDate] = useState(
-        new Date().toISOString().slice(0, 10)
+        new Date().toLocaleDateString("en-CA")
     );
 
     const changeDate = async (date: string) => {
@@ -32,7 +32,6 @@ export default function Stats() {
             );
             final.push([key + ":00", found?.[1] ?? 0]);
         }
-        console.log(final);
         setSchedules(final);
     };
     useEffect(() => {

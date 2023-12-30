@@ -54,9 +54,6 @@ export default function Stats_Months() {
                         setSelectedMonth(
                             (e.target as HTMLSelectElement).selectedIndex
                         );
-                        console.log(
-                            (e.target as HTMLSelectElement).selectedIndex
-                        );
                     }}>
                     {MONTHS.map((e, i) => (
                         <option
