@@ -1,7 +1,7 @@
 "use strict";
 
 self.__WB_DISABLE_DEV_LOGS = true;
-const PREFIX = "SCHEDULE";
+const PREFIX = "CDULE";
 
 import { registerRoute } from "workbox-routing";
 import {

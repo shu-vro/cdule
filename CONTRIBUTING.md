@@ -1,15 +1,15 @@
-# SCHEDULE
+# CDULE
 
 ## CONTRIBUTING
 
-Thanks for reaching to this page. any contributing to this repository is gladly welcomed. 
+Thanks for reaching to this page. any contributing to this repository is gladly welcomed.
 
 ### Steps
 
 1. Clone this repo
     ```sh
-    https://github.com/shu-vro/schedule.git
-    cd schedule
+    https://github.com/shu-vro/cdule.git
+    cd cdule
     ```
 2. Run the dev command
     ```sh
@@ -26,4 +26,4 @@ however, they can be manually be downloaded which I didn't like (I'm lazy)
 
 Otherwise, if you have any feature request or issue in this app, you can visit the issue panel and submit an issue.
 
-*Finally, thanks for contributing this repository*
+_Finally, thanks for contributing this repository_

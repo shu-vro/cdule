@@ -1,6 +1,6 @@
 {
-    "name": "SCHEDULE",
-    "short_name": "Schedule",
+    "name": "CDULE",
+    "short_name": "cdule",
     "icons": [
         {
             "src": "android/android-launchericon-512-512.png",
