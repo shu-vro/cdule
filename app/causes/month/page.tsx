@@ -3,7 +3,7 @@
 import { entries } from "idb-keyval";
 import { groupBy } from "lodash";
 import React, { useEffect, useState } from "react";
-import { DisplayCause } from "../page";
+import DisplayCause from "../DisplayCause";
 
 export default function Causes_Week() {
     const [data, setData] = useState<{

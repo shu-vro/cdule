@@ -1,5 +1,5 @@
 import React from "react";
-import Layout_Wrapper from "@/app/stats/layout";
+import TopNav from "../stats/TopNav";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     const links = [
@@ -16,5 +16,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             href: "/causes/month",
         },
     ];
-    return <Layout_Wrapper children={children} nav_links={links} />;
+    return (
+        <div>
+            <TopNav links={links} />
+            {children}
+        </div>
+    );
 }
