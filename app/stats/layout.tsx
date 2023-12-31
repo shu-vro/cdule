@@ -5,9 +5,12 @@ import Link from "next/link";
 import React from "react";
 import { usePathname } from "next/navigation";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout(props: {
+    children: React.ReactNode;
+    nav_links?: { title: string; href: string }[];
+}) {
     const pathname = usePathname();
-    const links = [
+    const links = props?.nav_links || [
         {
             title: "today",
             href: "/stats",
@@ -41,7 +44,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     })}
                 </ul>
             </nav>
-            <div className="p-3">{children}</div>
+            <div className="p-3">{props.children}</div>
         </>
     );
 }

@@ -12,7 +12,6 @@ export default function Month() {
             let ent = await entries();
 
             let storage = [];
-
             const today = new Date();
             const currentMonth = today.getMonth();
             const datesInMonth = getDatesInMonth(currentMonth);
@@ -37,7 +36,7 @@ export default function Month() {
     return (
         <div className="p-3">
             <div className="font-bold text-4xl flex justify-between items-center flex-row">
-                THIS WEEK
+                THIS MONTH
             </div>
 
             <table className="w-full border-collapse border border-[#444] text-[1.3rem] max-[700px]:text-base max-[500px]:text-xs my-4">

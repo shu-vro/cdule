@@ -52,3 +52,25 @@ export function convertTimeToAM_PM(timeString: string) {
 
     return `${hours.toString().padStart(2, "0")}:${minutes} ${amPm}`;
 }
+
+export function DaysOfWeek() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const firstDayOfWeek = today.getDay();
+    const weekStartOffset = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
+
+    const startOfWeek = new Date(
+        today.getTime() - weekStartOffset * 24 * 60 * 60 * 1000
+    );
+
+    let daysOfWeek: (DateConstructor | string | Date)[] = [];
+
+    for (let i = 0; i < 7; i++) {
+        const day = new Date(startOfWeek.getTime() + i * 24 * 60 * 60 * 1000);
+        daysOfWeek.push(day);
+    }
+    return daysOfWeek.map(day =>
+        (day as Date).toLocaleDateString().slice(0, 10)
+    );
+}

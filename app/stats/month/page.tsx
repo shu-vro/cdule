@@ -10,8 +10,9 @@ Chart.register(...registerables);
 export default function Stats_Months() {
     const [schedules, setSchedules] = useState<any[]>([]);
     const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
+    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
-    const changeMonth = async (month: number) => {
+    const changeMonth = async (month: number, year: number) => {
         let ent = await entries();
 
         let storage = [];
@@ -19,7 +20,10 @@ export default function Stats_Months() {
 
         for (const day in datesInMonth) {
             let temp = ent.filter(el => {
-                return el[0].toString().startsWith(datesInMonth[day] as string);
+                return (
+                    el[0].toString().startsWith(datesInMonth[day] as string) &&
+                    el[0].toString().split(" ")[0].endsWith(year.toString())
+                );
             });
             storage.push([
                 datesInMonth[day],
@@ -32,38 +36,34 @@ export default function Stats_Months() {
     };
     useEffect(() => {
         (async () => {
-            await changeMonth(selectedMonth);
+            await changeMonth(selectedMonth, selectedYear);
         })();
     }, [selectedMonth]);
     useEffect(() => {
         (async () => {
             const today = new Date();
             const currentMonth = today.getMonth();
-            await changeMonth(currentMonth);
+            const currentYear = today.getFullYear();
+            await changeMonth(currentMonth, currentYear);
         })();
     }, []);
+
     return (
         <>
             <h1 className="text-4xl font-bold">
                 Stats:{" "}
-                <select
-                    name="month"
-                    className="bg-inherit text-inherit"
-                    value={selectedMonth}
+                <input
+                    type="month"
+                    className="bg-inherit"
+                    value={`${selectedYear}-${(selectedMonth + 1)
+                        .toString()
+                        .padStart(2, "0")}`}
                     onChange={e => {
-                        setSelectedMonth(
-                            (e.target as HTMLSelectElement).selectedIndex
-                        );
-                    }}>
-                    {MONTHS.map((e, i) => (
-                        <option
-                            value={i}
-                            className="bg-black text-inherit"
-                            selected={i == new Date().getMonth()}>
-                            {i == new Date().getMonth() ? "This month" : e}
-                        </option>
-                    ))}
-                </select>
+                        let [year, month] = e.target.value.split("-");
+                        setSelectedMonth(+month - 1);
+                        setSelectedYear(+year);
+                    }}
+                />
             </h1>
             <div className="h-[60vh] w-[90vw] mx-auto">
                 <Bar

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import { entries } from "idb-keyval";
+import { DaysOfWeek } from "@/lib/utils";
 Chart.register(...registerables);
 
 export default function Week_Stats() {
@@ -15,28 +16,7 @@ export default function Week_Stats() {
 
             let storage = [];
 
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-
-            const firstDayOfWeek = today.getDay();
-            const weekStartOffset =
-                firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
-
-            const startOfWeek = new Date(
-                today.getTime() - weekStartOffset * 24 * 60 * 60 * 1000
-            );
-
-            let daysOfWeek: (DateConstructor | string | Date)[] = [];
-
-            for (let i = 0; i < 7; i++) {
-                const day = new Date(
-                    startOfWeek.getTime() + i * 24 * 60 * 60 * 1000
-                );
-                daysOfWeek.push(day);
-            }
-            daysOfWeek = daysOfWeek.map(day =>
-                (day as Date).toLocaleDateString().slice(0, 10)
-            );
+            const daysOfWeek = DaysOfWeek();
 
             for (const day in daysOfWeek) {
                 let temp = ent.filter(el => {

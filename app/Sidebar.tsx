@@ -25,6 +25,10 @@ export default function Sidebar() {
             to: "/stats",
         },
         {
+            name: "causes",
+            to: "/causes",
+        },
+        {
             name: "import/export",
             to: "/import-export",
         },
