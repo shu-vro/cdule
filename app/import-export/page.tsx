@@ -27,7 +27,7 @@ export default function Import_Export() {
                                     let json = JSON.parse(result as string);
                                     await clear();
                                     await setMany(json);
-                                    console.log(json);
+                                    alert(`Added ${json.length} schedules`);
                                 } catch (error: any) {
                                     alert(error.message);
                                 }
@@ -45,7 +45,9 @@ export default function Import_Export() {
                         ent = ent.filter(el => {
                             return el[0]
                                 .toString()
-                                .startsWith(new Date().toLocaleDateString());
+                                .startsWith(
+                                    new Date().toLocaleDateString("en-US")
+                                );
                         });
 
                         const link = document.createElement("a");

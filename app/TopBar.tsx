@@ -13,7 +13,7 @@ export default function TopBar() {
             <FaBars
                 className="cursor-pointer"
                 onClick={() => {
-                    setValue(prev => !prev);
+                    setValue(true);
                 }}
             />
             <h1 className="font-bold flex flex-row justify-center items-center">

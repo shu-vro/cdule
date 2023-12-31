@@ -19,7 +19,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     return (
         <div>
             <TopNav links={links} />
-            {children}
+            <div className="p-3">{children}</div>
         </div>
     );
 }

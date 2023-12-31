@@ -1,8 +1,9 @@
 "use client";
 
 import { MdPlaylistAdd } from "react-icons/md";
-import { useEffect, useRef, useState } from "react";
-import { set, entries } from "idb-keyval";
+import { useEffect, useState } from "react";
+import { set, entries, del } from "idb-keyval";
+import { RiDeleteBin6Fill } from "react-icons/ri";
 
 export default function Home() {
     const [newField, setNewField] = useState(false);
@@ -18,7 +19,7 @@ export default function Home() {
             ent = ent.filter(el => {
                 return el[0]
                     .toString()
-                    .startsWith(new Date().toLocaleDateString());
+                    .startsWith(new Date().toLocaleDateString("en-US"));
             });
             setSchedules(ent);
         })();
@@ -105,7 +106,9 @@ export default function Home() {
                                     onClick={async () => {
                                         setNewField(false);
                                         let today =
-                                            new Date().toLocaleDateString();
+                                            new Date().toLocaleDateString(
+                                                "en-US"
+                                            );
                                         await set(`${today} ${time}`, {
                                             time: `${today} ${time}`,
                                             cause,
@@ -133,8 +136,28 @@ export default function Home() {
                                 </td>
                                 <td className="w-1/3">{value.cause}</td>
                                 <td className="w-1/3">
-                                    {value.amount}
-                                    <span className="ml-2">৳</span>
+                                    <div className="flex justify-between items-center">
+                                        <span>
+                                            {value.amount}
+                                            <span className="ml-2">৳</span>
+                                        </span>
+
+                                        <button
+                                            type="button"
+                                            className="p-2 bg-neutral-700"
+                                            onClick={async () => {
+                                                try {
+                                                    await del(key);
+                                                    setRefreshControl(
+                                                        prev => prev + 1
+                                                    );
+                                                } catch (error) {
+                                                    console.log(error);
+                                                }
+                                            }}>
+                                            <RiDeleteBin6Fill />
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         );

@@ -43,7 +43,7 @@ export default function Sidebar() {
                 <button
                     type="button"
                     onClick={() => {
-                        setValue(prev => !prev);
+                        setValue(false);
                     }}
                     className="capitalize text-xl rounded-full bg-neutral-600 px-4 py-2 my-3 font-bold flex justify-center items-center pl-2">
                     <FaAngleLeft className="mr-2" />
@@ -54,7 +54,12 @@ export default function Sidebar() {
                         <li
                             key={obj.name}
                             className="px-3 py-2 bg-neutral-600 my-1 mx-2 rounded capitalize">
-                            <Link className="w-full block" href={obj.to}>
+                            <Link
+                                className="w-full block"
+                                href={obj.to}
+                                onClick={() => {
+                                    setValue(false);
+                                }}>
                                 {obj.name}
                             </Link>
                         </li>

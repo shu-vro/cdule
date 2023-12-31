@@ -18,7 +18,7 @@ export default function Causes() {
         let today_s_data = ent.filter(el => {
             return el[0]
                 .toString()
-                .startsWith(new Date(date).toLocaleDateString());
+                .startsWith(new Date(date).toLocaleDateString("en-US"));
         });
         let group = groupBy(today_s_data, e => e[1].cause.trim());
         setData(group);

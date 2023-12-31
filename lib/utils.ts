@@ -71,6 +71,6 @@ export function DaysOfWeek() {
         daysOfWeek.push(day);
     }
     return daysOfWeek.map(day =>
-        (day as Date).toLocaleDateString().slice(0, 10)
+        (day as Date).toLocaleDateString(`en-US`).slice(0, 10)
     );
 }

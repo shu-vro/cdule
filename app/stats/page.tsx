@@ -19,7 +19,7 @@ export default function Stats() {
             .filter(el => {
                 return el[0]
                     .toString()
-                    .startsWith(new Date(date).toLocaleDateString());
+                    .startsWith(new Date(date).toLocaleDateString(`en-US`));
             })
             .map(e => [e[0], e[1].amount]);
 
@@ -36,7 +36,7 @@ export default function Stats() {
     };
     useEffect(() => {
         (async () => {
-            await changeDate(new Date().toLocaleDateString());
+            await changeDate(new Date().toLocaleDateString(`en-US`));
         })();
     }, []);
     useEffect(() => {
