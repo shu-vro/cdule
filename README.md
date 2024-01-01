@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# CDULE
 
-## Getting Started
+Schedule your daily life's spending
 
-First, run the development server:
+## Live app:
+https://cdule.netlify.app/
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Idea
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Its 2023 and I'm still a university student in RUET. My parents gave me money and I couldn't remember where I spent them. So, this app will track my daily spendings and give me some graphical representation of how much I spend in a day, week, or month.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Functionality
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. Write daily spendings in the start page.
+2. Delete if you made a mistake (no edits)
+3. get tabular or graphical interface
+    * Head to `This Week` or `This Month` page for tabular interface of day to doay spendings
+    * Head to `Stats` page to get graphical interface.
+        * There, you will find `today`, `week`, `month` tabs to be navigated
+    * Head to `Causes` page to get information about how much you spent for a specific cause daily, monthly or weekly
+  
+4. Import/export schedules
+5. [PWA](https://web.dev/explore/progressive-web-apps) support
 
-## Learn More
+This app stores schedules in [indexed db](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API). This is a local storage which can store vast number of data in a device.
 
-To learn more about Next.js, take a look at the following resources:
+This app do not store any data to database. So, only you (the user) will know what schedule you have saved. 
+Export schedules from `import/export` page and import it on another device to reuse them. However, stats won't sync with 2 devices. This is a pitfall of not to storing schedules in a database.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This app has offline support. So you can use it anytime and  anywhere you like. It also can be installed in different devices as pwa that will give a native app feeling
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Contributing
 
-## Deploy on Vercel
+Head to the [contributing page](https://github.com/shu-vro/cdule/blob/main/CONTRIBUTING.md)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
