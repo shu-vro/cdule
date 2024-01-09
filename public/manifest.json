@@ -1,6 +1,11 @@
 {
     "name": "CDULE",
     "short_name": "cdule",
+    "theme_color": "#333333",
+    "background_color": "#e8c2f1",
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "portrait",
     "icons": [
         {
             "src": "android/android-launchericon-512-512.png",
@@ -27,9 +32,54 @@
             "sizes": "48x48"
         }
     ],
-    "theme_color": "#333333",
-    "background_color": "#e8c2f1",
-    "start_url": "/",
-    "display": "standalone",
-    "orientation": "portrait"
+    "shortcuts": [
+        {
+            "name": "This Week",
+            "short_name": "This Week",
+            "description": "This week's tabular data representation",
+            "url": "/week",
+            "icons": [
+                {
+                    "src": "android/android-launchericon-96-96.png",
+                    "sizes": "96x96"
+                }
+            ]
+        },
+        {
+            "name": "This Month",
+            "short_name": "This Month",
+            "description": "This month's tabular data representation",
+            "url": "/month",
+            "icons": [
+                {
+                    "src": "android/android-launchericon-96-96.png",
+                    "sizes": "96x96"
+                }
+            ]
+        },
+        {
+            "name": "Stats",
+            "short_name": "Stats",
+            "description": "Graphical interface of expenditure",
+            "url": "/stats",
+            "icons": [
+                {
+                    "src": "android/android-launchericon-96-96.png",
+                    "sizes": "96x96"
+                }
+            ]
+        },
+        {
+            "name": "Causes",
+            "short_name": "Causes",
+            "description": "Causes (if specified)",
+            "url": "/causes",
+            "icons": [
+                {
+                    "src": "android/android-launchericon-96-96.png",
+                    "sizes": "96x96"
+                }
+            ]
+        }
+    ]
 }

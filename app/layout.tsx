@@ -17,6 +17,7 @@ const APP_DESCRIPTION = "Schedule your daily life's spending";
 
 export const metadata: Metadata = {
     applicationName: APP_NAME,
+    themeColor: "#333333",
     title: {
         default: APP_DEFAULT_TITLE,
         template: APP_TITLE_TEMPLATE,
