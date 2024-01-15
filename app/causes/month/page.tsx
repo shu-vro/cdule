@@ -42,7 +42,7 @@ export default function Causes_Week() {
 
     return (
         <div>
-            <h1 className="text-4xl font-bold">
+            <h1 className="text-3xl font-bold">
                 Causes -
                 <input
                     type="month"

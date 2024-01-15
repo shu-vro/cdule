@@ -36,7 +36,7 @@ export default function Week_Stats() {
     }, []);
     return (
         <>
-            <h1 className="text-4xl font-bold">Stats: This week</h1>
+            <h1 className="text-3xl font-bold">Stats: This week</h1>
             <div className="h-[60vh] w-[90vw] m-auto">
                 <Bar
                     className="h-[60vh] w-[90vw] mx-auto"

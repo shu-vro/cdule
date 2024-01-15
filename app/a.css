@@ -1,0 +1,33 @@
+.select-container {
+    position: relative;
+}
+.select-container input {
+    width: 100% !important;
+    background: #1f2227;
+    color: white;
+}
+.select-container .options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    overflow-y: auto;
+    width: 100%;
+    max-height: 150px;
+    background: #1f2227;
+    display: none;
+}
+.select-container .options .option {
+    cursor: pointer;
+    word-wrap: break-word;
+    border-bottom: 1px solid #555;
+}
+.select-container .options .option.block {
+    display: block;
+}
+.select-container .options .option.none {
+    display: none;
+}
+.select-container .options .option.focused,
+.select-container .options .option:hover {
+    background: #444;
+}

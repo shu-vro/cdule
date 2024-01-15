@@ -35,7 +35,7 @@ export default function Month() {
 
     return (
         <div className="p-3">
-            <div className="font-bold text-4xl flex justify-between items-center flex-row">
+            <div className="font-bold text-3xl flex justify-between items-center flex-row">
                 THIS MONTH
             </div>
 
@@ -66,7 +66,7 @@ export default function Month() {
                     })}
                 </tbody>
             </table>
-            <div className="flex justify-center items-center text-4xl">
+            <div className="flex justify-center items-center text-2xl">
                 <div className="grow"></div>
                 <span>
                     Total:{" "}

@@ -34,7 +34,7 @@ export default function Causes_Week() {
 
     return (
         <div>
-            <h1 className="text-4xl font-bold">Causes - This week</h1>
+            <h1 className="text-3xl font-bold">Causes - This week</h1>
             {Object.entries(data).map(([cause, schedule]) => (
                 <DisplayCause cause={cause} schedules={schedule} />
             ))}

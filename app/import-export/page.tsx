@@ -6,7 +6,7 @@ import React from "react";
 export default function Import_Export() {
     return (
         <div className="p-3">
-            <h1 className="text-4xl font-bold mb-3">Import/Export</h1>
+            <h1 className="text-3xl font-bold mb-3">Import/Export</h1>
             <div className="p-3">
                 <h2 className="text-3xl font-bold mb-4">Import</h2>
 

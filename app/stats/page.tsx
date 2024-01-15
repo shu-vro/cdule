@@ -46,7 +46,7 @@ export default function Stats() {
     }, [selectedDate]);
     return (
         <>
-            <h1 className="text-4xl font-bold">
+            <h1 className="text-3xl font-bold">
                 Stats:{" "}
                 <input
                     type="date"

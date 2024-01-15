@@ -29,7 +29,7 @@ export default function DisplayCause({
                     })}
                 </tbody>
             </table>
-            <div className="flex justify-center items-center text-4xl">
+            <div className="flex justify-center items-center text-2xl">
                 <div className="grow"></div>
                 <span>
                     Total:{" "}
