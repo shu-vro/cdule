@@ -42,13 +42,7 @@ export default function Import_Export() {
                     type="button"
                     onClick={async () => {
                         let ent = await entries();
-                        ent = ent.filter(el => {
-                            return el[0]
-                                .toString()
-                                .startsWith(
-                                    new Date().toLocaleDateString("en-US")
-                                );
-                        });
+                        console.log(ent);
 
                         const link = document.createElement("a");
                         const content = JSON.stringify(ent, null, 2);
