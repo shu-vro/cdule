@@ -4,19 +4,18 @@ import React, { useEffect, useState } from "react";
 import { groupBy } from "lodash";
 import { entries } from "idb-keyval";
 import DisplayCause from "./DisplayCause";
+import { useSearchParams } from "next/navigation";
 
-export default function Causes({
-    searchParams,
-}: {
-    searchParams: {
-        date?: string;
-    };
-}) {
+export default function Causes() {
+    const searchParams = useSearchParams();
     const [data, setData] = useState<{
         [x: string]: [IDBValidKey, ISchedule][];
     }>({});
+    console.log(searchParams);
     const [selectedDate, setSelectedDate] = useState(
-        new Date(searchParams.date || Date.now()).toLocaleDateString("en-CA")
+        new Date(searchParams.get("date") || Date.now()).toLocaleDateString(
+            "en-CA"
+        )
     );
 
     const handleDateChange = async (date: string | number) => {
@@ -33,7 +32,7 @@ export default function Causes({
 
     useEffect(() => {
         (async () => {
-            await handleDateChange(searchParams.date || Date.now());
+            await handleDateChange(searchParams.get(`date`) || Date.now());
         })();
     }, []);
 
