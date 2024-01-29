@@ -57,20 +57,53 @@ export function DaysOfWeek() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const firstDayOfWeek = today.getDay();
-    const weekStartOffset = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
-
+    // Directly set the start of the week to Sunday
     const startOfWeek = new Date(
-        today.getTime() - weekStartOffset * 24 * 60 * 60 * 1000
+        today.getTime() - today.getDay() * 24 * 60 * 60 * 1000
     );
 
-    let daysOfWeek: (DateConstructor | string | Date)[] = [];
+    const daysOfWeek = [];
 
     for (let i = 0; i < 7; i++) {
         const day = new Date(startOfWeek.getTime() + i * 24 * 60 * 60 * 1000);
-        daysOfWeek.push(day);
+        daysOfWeek.push((day as Date).toLocaleDateString(`en-US`).slice(0, 10));
     }
-    return daysOfWeek.map(day =>
-        (day as Date).toLocaleDateString(`en-US`).slice(0, 10)
-    );
+
+    return daysOfWeek;
 }
+
+export const chartJs = {
+    options: {
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                beginAtZero: true,
+            },
+        },
+    },
+    generateDataSet: (data: any[]) => {
+        return {
+            label: "Spending in taka",
+            borderWidth: 1,
+            backgroundColor: [
+                "rgba(255, 99, 132, 0.2)",
+                "rgba(255, 159, 64, 0.2)",
+                "rgba(255, 205, 86, 0.2)",
+                "rgba(75, 192, 192, 0.2)",
+                "rgba(54, 162, 235, 0.2)",
+                "rgba(153, 102, 255, 0.2)",
+                "rgba(201, 203, 207, 0.2)",
+            ],
+            borderColor: [
+                "rgb(255, 99, 132)",
+                "rgb(255, 159, 64)",
+                "rgb(255, 205, 86)",
+                "rgb(75, 192, 192)",
+                "rgb(54, 162, 235)",
+                "rgb(153, 102, 255)",
+                "rgb(201, 203, 207)",
+            ],
+            data,
+        };
+    },
+};

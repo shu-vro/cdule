@@ -17,9 +17,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         },
     ];
     return (
-        <div>
+        <>
             <TopNav links={links} />
-            <div className="p-3">{children}</div>
-        </div>
+            <div className="p-3 bg-inherit">{children}</div>
+        </>
     );
 }

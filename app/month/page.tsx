@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { entries } from "idb-keyval";
 import { getDatesInMonth } from "@/lib/utils";
+import Total from "../Total";
+import Link from "next/link";
 
 export default function Month() {
     const [schedules, setSchedules] = useState<any[]>([]);
@@ -34,7 +36,7 @@ export default function Month() {
     }, []);
 
     return (
-        <div className="p-3">
+        <div className="p-3 bg-inherit">
             <div className="font-bold text-3xl flex justify-between items-center flex-row">
                 THIS MONTH
             </div>
@@ -51,11 +53,13 @@ export default function Month() {
                         return (
                             <tr key={key as string}>
                                 <td className="w-1/2">
-                                    <span>
+                                    <Link
+                                        href={`/causes?date=${key}`}
+                                        className="hover:underline">
                                         {new Date(key).toLocaleDateString(
                                             "en-GB"
                                         )}
-                                    </span>
+                                    </Link>
                                 </td>
                                 <td className="w-1/2">
                                     {value}
@@ -66,15 +70,11 @@ export default function Month() {
                     })}
                 </tbody>
             </table>
-            <div className="flex justify-center items-center text-2xl">
-                <div className="grow"></div>
-                <span>
-                    Total:{" "}
-                    {schedules.reduce((prev, curr) => {
-                        return prev + curr[1];
-                    }, 0)}
-                </span>
-            </div>
+            <Total>
+                {schedules.reduce((prev, curr) => {
+                    return prev + curr[1];
+                }, 0)}
+            </Total>
         </div>
     );
 }

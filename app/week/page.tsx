@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { entries } from "idb-keyval";
 import { DaysOfWeek } from "@/lib/utils";
+import Total from "../Total";
+import Link from "next/link";
 
 export default function Week() {
     const [schedules, setSchedules] = useState<any[]>([]);
@@ -33,7 +35,7 @@ export default function Week() {
     }, []);
 
     return (
-        <div className="p-3">
+        <div className="p-3 bg-inherit">
             <div className="font-bold text-3xl flex justify-between items-center flex-row">
                 THIS WEEK
             </div>
@@ -50,19 +52,26 @@ export default function Week() {
                         return (
                             <tr key={key as string}>
                                 <td className="w-1/2">
-                                    {new Date(key).toLocaleDateString("en", {
-                                        weekday: "long",
-                                    })}{" "}
-                                    <span className="opacity-50">
+                                    <Link
+                                        className="hover:underline"
+                                        href={`/causes?date=${key}`}>
                                         {new Date(key).toLocaleDateString(
-                                            "en-GB",
+                                            "en",
                                             {
-                                                day: "2-digit",
-                                                month: "2-digit",
-                                                year: "numeric",
+                                                weekday: "long",
                                             }
-                                        )}
-                                    </span>
+                                        )}{" "}
+                                        <span className="opacity-50">
+                                            {new Date(key).toLocaleDateString(
+                                                "en-GB",
+                                                {
+                                                    day: "2-digit",
+                                                    month: "2-digit",
+                                                    year: "numeric",
+                                                }
+                                            )}
+                                        </span>
+                                    </Link>
                                 </td>
                                 <td className="w-1/2">
                                     {value}
@@ -73,15 +82,11 @@ export default function Week() {
                     })}
                 </tbody>
             </table>
-            <div className="flex justify-center items-center text-2xl">
-                <div className="grow"></div>
-                <span>
-                    Total:{" "}
-                    {schedules.reduce((prev, curr) => {
-                        return prev + curr[1];
-                    }, 0)}
-                </span>
-            </div>
+            <Total>
+                {schedules.reduce((prev, curr) => {
+                    return prev + curr[1];
+                }, 0)}
+            </Total>
         </div>
     );
 }

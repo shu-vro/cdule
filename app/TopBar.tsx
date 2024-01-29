@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { FaBars } from "react-icons/fa6";
 import favicon from "./favicon.ico";
 import { GoDesktopDownload } from "react-icons/go";
+import { LuPrinter } from "react-icons/lu";
 
 export default function TopBar() {
     const { setValue } = useNavbar();
@@ -38,6 +39,12 @@ export default function TopBar() {
                         }}
                     />
                 )}
+                <LuPrinter
+                    className="cursor-pointer ml-4"
+                    onClick={() => {
+                        window.print();
+                    }}
+                />
             </div>
             <h1 className="font-bold flex flex-row justify-center items-center">
                 C<span className="text-[#b16ced]">DULE</span>

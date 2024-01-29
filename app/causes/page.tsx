@@ -5,12 +5,18 @@ import { groupBy } from "lodash";
 import { entries } from "idb-keyval";
 import DisplayCause from "./DisplayCause";
 
-export default function Causes() {
+export default function Causes({
+    searchParams,
+}: {
+    searchParams: {
+        date?: string;
+    };
+}) {
     const [data, setData] = useState<{
         [x: string]: [IDBValidKey, ISchedule][];
     }>({});
     const [selectedDate, setSelectedDate] = useState(
-        new Date().toLocaleDateString("en-CA")
+        new Date(searchParams.date || Date.now()).toLocaleDateString("en-CA")
     );
 
     const handleDateChange = async (date: string | number) => {
@@ -22,11 +28,12 @@ export default function Causes() {
         });
         let group = groupBy(today_s_data, e => e[1].cause.trim());
         setData(group);
+        return group;
     };
 
     useEffect(() => {
         (async () => {
-            await handleDateChange(Date.now());
+            await handleDateChange(searchParams.date || Date.now());
         })();
     }, []);
 
@@ -50,7 +57,7 @@ export default function Causes() {
                 />
             </h1>
             {Object.entries(data).map(([cause, schedule]) => (
-                <DisplayCause cause={cause} schedules={schedule} />
+                <DisplayCause cause={cause} schedules={schedule} key={cause} />
             ))}
         </div>
     );

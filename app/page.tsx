@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { set, entries, del } from "idb-keyval";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import CustomSelect from "./CustomSelect";
+import Total from "./Total";
 
 export default function Home() {
     const [newField, setNewField] = useState(false);
@@ -41,7 +42,7 @@ export default function Home() {
     }, [refreshControl]);
 
     return (
-        <div className="p-3">
+        <div className="p-3 bg-inherit">
             <div className="font-bold text-3xl flex justify-between items-center flex-row">
                 TODAY
                 <button
@@ -177,15 +178,11 @@ export default function Home() {
                     })}
                 </tbody>
             </table>
-            <div className="flex justify-center items-center text-2xl">
-                <div className="grow"></div>
-                <span>
-                    Total:{" "}
-                    {schedules.reduce((prev, curr) => {
-                        return prev + curr[1].amount;
-                    }, 0)}
-                </span>
-            </div>
+            <Total>
+                {schedules.reduce((prev, curr) => {
+                    return prev + curr[1].amount;
+                }, 0)}
+            </Total>
         </div>
     );
 }

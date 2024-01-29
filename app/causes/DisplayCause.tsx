@@ -1,3 +1,5 @@
+import Total from "../Total";
+
 export default function DisplayCause({
     cause,
     schedules,
@@ -29,15 +31,11 @@ export default function DisplayCause({
                     })}
                 </tbody>
             </table>
-            <div className="flex justify-center items-center text-2xl">
-                <div className="grow"></div>
-                <span>
-                    Total:{" "}
-                    {schedules.reduce((prev, curr) => {
-                        return prev + curr[1].amount;
-                    }, 0)}
-                </span>
-            </div>
+            <Total>
+                {schedules.reduce((prev, curr) => {
+                    return prev + curr[1].amount;
+                }, 0)}
+            </Total>
         </div>
     );
 }
