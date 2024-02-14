@@ -4,11 +4,13 @@ import { entries } from "idb-keyval";
 import { groupBy } from "lodash";
 import React, { useEffect, useState } from "react";
 import DisplayCause from "../DisplayCause";
+import Total from "@/app/Total";
 
 export default function Causes_Week() {
     const [data, setData] = useState<{
         [x: string]: [IDBValidKey, ISchedule][];
     }>({});
+    const [total, setTotal] = useState(0);
     const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
@@ -23,6 +25,12 @@ export default function Causes_Week() {
             );
         });
         let group = groupBy(ent, e => e[1].cause.trim());
+
+        setTotal(
+            Object.values(ent).reduce((prev, curr) => {
+                return prev + curr[1].amount;
+            }, 0)
+        );
         setData(group);
     };
 
@@ -60,6 +68,7 @@ export default function Causes_Week() {
             {Object.entries(data).map(([cause, schedule]) => (
                 <DisplayCause cause={cause} schedules={schedule} />
             ))}
+            <Total>{total}</Total>
         </div>
     );
 }

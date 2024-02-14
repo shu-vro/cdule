@@ -5,13 +5,14 @@ import { groupBy } from "lodash";
 import { entries } from "idb-keyval";
 import DisplayCause from "./DisplayCause";
 import { useSearchParams } from "next/navigation";
+import Total from "../Total";
 
 export default function Causes() {
     const searchParams = useSearchParams();
     const [data, setData] = useState<{
         [x: string]: [IDBValidKey, ISchedule][];
     }>({});
-    console.log(searchParams);
+    const [total, setTotal] = useState(0);
     const [selectedDate, setSelectedDate] = useState(
         new Date(searchParams.get("date") || Date.now()).toLocaleDateString(
             "en-CA"
@@ -27,7 +28,12 @@ export default function Causes() {
         });
         let group = groupBy(today_s_data, e => e[1].cause.trim());
         setData(group);
-        return group;
+
+        setTotal(
+            Object.values(today_s_data).reduce((prev, curr) => {
+                return prev + curr[1].amount;
+            }, 0)
+        );
     };
 
     useEffect(() => {
@@ -58,6 +64,7 @@ export default function Causes() {
             {Object.entries(data).map(([cause, schedule]) => (
                 <DisplayCause cause={cause} schedules={schedule} key={cause} />
             ))}
+            <Total>{total}</Total>
         </div>
     );
 }

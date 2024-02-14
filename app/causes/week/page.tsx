@@ -4,31 +4,28 @@ import { entries } from "idb-keyval";
 import { groupBy } from "lodash";
 import React, { useEffect, useState } from "react";
 import DisplayCause from "../DisplayCause";
+import { DaysOfWeek } from "@/lib/utils";
+import Total from "@/app/Total";
 
 export default function Causes_Week() {
     const [data, setData] = useState<{
         [x: string]: [IDBValidKey, ISchedule][];
     }>({});
+    const [total, setTotal] = useState(0);
     useEffect(() => {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-
-        const firstDayOfWeek = today.getDay();
-        const weekStartOffset = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
-
-        const startOfWeek = new Date(
-            today.getTime() - weekStartOffset * 24 * 60 * 60 * 1000
-        );
-
+        const daysOfWeek = DaysOfWeek();
         (async () => {
             let ent = await entries();
             ent = ent.filter(([key, value]) => {
-                let key_date = new Date(key.toString().split(" ")[0]);
-
-                return key_date.getTime() - startOfWeek.getTime() > 0;
+                return daysOfWeek.includes(key.toString().split(" ")[0]);
             });
             let group = groupBy(ent, e => e[1].cause.trim());
             setData(group);
+            setTotal(
+                Object.values(ent).reduce((prev, curr) => {
+                    return prev + curr[1].amount;
+                }, 0)
+            );
         })();
     }, []);
 
@@ -38,6 +35,8 @@ export default function Causes_Week() {
             {Object.entries(data).map(([cause, schedule]) => (
                 <DisplayCause cause={cause} schedules={schedule} />
             ))}
+
+            <Total>{total}</Total>
         </div>
     );
 }

@@ -6,6 +6,9 @@ import { set, entries, del } from "idb-keyval";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import CustomSelect from "./CustomSelect";
 import Total from "./Total";
+import { deleteDoc, doc, setDoc } from "firebase/firestore";
+import { auth, firestoreDb } from "@/firebase";
+import md5 from "md5";
 
 export default function Home() {
     const [newField, setNewField] = useState(false);
@@ -129,6 +132,31 @@ export default function Home() {
                                             amount,
                                         } as ISchedule);
                                         setRefreshControl(prev => prev + 1);
+
+                                        try {
+                                            if (auth.currentUser) {
+                                                const id = md5(
+                                                    `${today} ${time}`
+                                                );
+                                                await setDoc(
+                                                    doc(
+                                                        firestoreDb,
+                                                        "users",
+                                                        auth.currentUser.uid,
+                                                        `schedules`,
+                                                        id
+                                                    ),
+                                                    {
+                                                        time: `${today} ${time}`,
+                                                        cause,
+                                                        amount,
+                                                    },
+                                                    { merge: true }
+                                                );
+                                            }
+                                        } catch (error) {
+                                            console.warn(error);
+                                        }
                                     }}
                                     className="inline-block bg-green-700 rounded-lg p-2">
                                     Save
@@ -162,6 +190,20 @@ export default function Home() {
                                             onClick={async () => {
                                                 try {
                                                     await del(key);
+                                                    if (auth.currentUser) {
+                                                        await deleteDoc(
+                                                            doc(
+                                                                firestoreDb,
+                                                                "users",
+                                                                auth.currentUser
+                                                                    .uid,
+                                                                `schedules`,
+                                                                md5(
+                                                                    key as string
+                                                                )
+                                                            )
+                                                        );
+                                                    }
                                                     setRefreshControl(
                                                         prev => prev + 1
                                                     );

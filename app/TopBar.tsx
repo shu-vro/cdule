@@ -7,6 +7,10 @@ import { FaBars } from "react-icons/fa6";
 import favicon from "./favicon.ico";
 import { GoDesktopDownload } from "react-icons/go";
 import { LuPrinter } from "react-icons/lu";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, firestoreDb } from "@/firebase";
+import { collection, onSnapshot } from "firebase/firestore";
+import { set } from "idb-keyval";
 
 export default function TopBar() {
     const { setValue } = useNavbar();
@@ -17,7 +21,23 @@ export default function TopBar() {
         window.addEventListener("beforeinstallprompt", e => {
             setDeferredPrompt(e as BeforeInstallPromptEvent);
         });
+
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                console.log("user signed in");
+                onSnapshot(
+                    collection(firestoreDb, "users", user.uid, "schedules"),
+                    snapshot => {
+                        snapshot.forEach(async doc => {
+                            const data = doc.data() as ISchedule;
+                            await set(data.time, data);
+                        });
+                    }
+                );
+            }
+        });
     }, []);
+
     return (
         <div className="sticky top-0 bg-[#333] w-full h-16 flex justify-center items-center text-3xl px-4">
             <div className="grow flex flex-row">

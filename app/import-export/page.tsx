@@ -1,7 +1,22 @@
 "use client";
 
+import { auth, firestoreDb } from "@/firebase";
+import { doc, setDoc } from "firebase/firestore";
 import { entries, setMany, clear } from "idb-keyval";
+import md5 from "md5";
+import { z } from "zod";
 import React from "react";
+
+const schemaType = z.tuple([
+    z.string(),
+    z.object({
+        time: z.string(),
+        cause: z.string(),
+        amount: z.number(),
+    }),
+]);
+
+const schemaArrayType = z.array(schemaType);
 
 export default function Import_Export() {
     return (
@@ -24,12 +39,63 @@ export default function Import_Export() {
                             reader.addEventListener("load", async event => {
                                 let result = event.target?.result;
                                 try {
-                                    let json = JSON.parse(result as string);
+                                    let json: any[] = JSON.parse(
+                                        result as string
+                                    );
+                                    const confirmation = confirm(
+                                        `**PLEASE MAINTAIN PRECAUTION**
+${json.length} schedules are going to be added.
+and all previous schedules will be deleted. If
+you are logged in, then it will also change from the 
+database.
+Once previous data are deleted and new data entries,
+THERE IS NO GOING BACK.
+If you think the backup file has got everything you need,
+proceed with "Ok" button`
+                                    );
+                                    if (!confirmation)
+                                        return alert(`Cancelled!`);
                                     await clear();
                                     await setMany(json);
+
+                                    if (auth.currentUser) {
+                                        for (let schedule of json) {
+                                            try {
+                                                schedule =
+                                                    schemaType.parse(schedule);
+                                                const id = md5(
+                                                    schedule[1].time
+                                                );
+                                                console.log(id);
+                                                await setDoc(
+                                                    doc(
+                                                        firestoreDb,
+                                                        "users",
+                                                        auth.currentUser.uid,
+                                                        `schedules`,
+                                                        id
+                                                    ),
+                                                    schedule[1],
+                                                    { merge: true }
+                                                );
+                                            } catch (error: any) {
+                                                alert(
+                                                    "A certain schedule have problem or the file is corrupted.\nMESSAGE: " +
+                                                        JSON.parse(
+                                                            error.message
+                                                        )[0].message
+                                                );
+                                                console.warn(error.message);
+                                            }
+                                        }
+                                    }
                                     alert(`Added ${json.length} schedules`);
                                 } catch (error: any) {
-                                    alert(error.message);
+                                    console.warn(`FAILED: \n` + error);
+                                    alert(
+                                        `THIS FILE IS CORRUPTED. FAILED:\n` +
+                                            error.message
+                                    );
                                 }
                             });
                             reader.readAsText(file);
@@ -42,7 +108,6 @@ export default function Import_Export() {
                     type="button"
                     onClick={async () => {
                         let ent = await entries();
-                        console.log(ent);
 
                         const link = document.createElement("a");
                         const content = JSON.stringify(ent, null, 2);

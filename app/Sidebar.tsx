@@ -1,9 +1,13 @@
 "use client";
 
 import { useNavbar } from "@/contexts/NavbarContext";
+import { auth, signInWithGoogle } from "@/firebase";
 import { cn } from "@/lib/utils";
+import { User, signOut } from "firebase/auth";
+import Image from "next/image";
 import Link from "next/link";
 import { FaAngleLeft } from "react-icons/fa6";
+import { FcGoogle } from "react-icons/fc";
 
 export default function Sidebar() {
     const { value, setValue } = useNavbar();
@@ -64,6 +68,52 @@ export default function Sidebar() {
                             </Link>
                         </li>
                     ))}
+                    <li className="px-3 py-2 bg-neutral-600 hover:bg-sky-500 transition-all my-1 mx-2 rounded capitalize">
+                        {auth.currentUser ? (
+                            <div className="w-full text-start flex justify-between items-center gap-2">
+                                <div className="flex justify-start items-center gap-2">
+                                    <Image
+                                        src={
+                                            (auth.currentUser
+                                                ?.photoURL as string) ||
+                                            "https://cdn-icons-png.flaticon.com/512/10337/10337609.png"
+                                        }
+                                        alt={
+                                            auth.currentUser
+                                                ?.displayName as string
+                                        }
+                                        width={20}
+                                        height={20}
+                                    />
+                                    <span className="text-sm truncate">
+                                        {auth.currentUser.displayName}
+                                    </span>
+                                </div>
+                                <button
+                                    onClick={async () => {
+                                        setValue(false);
+                                        await signOut(auth);
+                                    }}
+                                    type="button"
+                                    className="hover:bg-red-500 transition-all rounded text-xl px-2 py-1">
+                                    Log out
+                                </button>
+                            </div>
+                        ) : (
+                            <button
+                                className="w-full text-start flex justify-start items-center gap-2"
+                                type="button"
+                                onClick={async () => {
+                                    setValue(false);
+                                    let user = await signInWithGoogle();
+                                    if (typeof user === "object") {
+                                        user = user as User;
+                                    }
+                                }}>
+                                <FcGoogle /> Sign In/Up
+                            </button>
+                        )}
+                    </li>
                 </ul>
             </div>
             <div
