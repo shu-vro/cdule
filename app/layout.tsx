@@ -6,6 +6,8 @@ import Sidebar from "./Sidebar";
 import NavbarContext from "@/contexts/NavbarContext";
 import TopBar from "./TopBar";
 import favicon from "./favicon.ico";
+import Loader from "./Loader";
+import LoaderContext from "@/contexts/LoaderContext";
 
 const font = Montserrat({
     subsets: ["latin", "latin-ext"],
@@ -74,11 +76,14 @@ export default function RootLayout({
                 />
             </head>
             <body className={font.className}>
-                <NavbarContext>
-                    <TopBar />
-                    <Sidebar />
-                    {children}
-                </NavbarContext>
+                <LoaderContext>
+                    <NavbarContext>
+                        <TopBar />
+                        <Sidebar />
+                        {children}
+                        <Loader />
+                    </NavbarContext>
+                </LoaderContext>
             </body>
         </html>
     );

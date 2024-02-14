@@ -1,16 +1,21 @@
 "use client";
 
 import { useNavbar } from "@/contexts/NavbarContext";
-import { auth, signInWithGoogle } from "@/firebase";
+import { auth, firestoreDb, signInWithGoogle } from "@/firebase";
 import { cn } from "@/lib/utils";
 import { User, signOut } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
 import { FaAngleLeft } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
+import { entries } from "idb-keyval";
+import md5 from "md5";
+import { useLoader } from "@/contexts/LoaderContext";
 
 export default function Sidebar() {
     const { value, setValue } = useNavbar();
+    const { setLoading } = useLoader();
     const list = [
         {
             name: "today",
@@ -70,8 +75,8 @@ export default function Sidebar() {
                     ))}
                     <li className="px-3 py-2 bg-neutral-600 hover:bg-sky-500 transition-all my-1 mx-2 rounded capitalize">
                         {auth.currentUser ? (
-                            <div className="w-full text-start flex justify-between items-center gap-2">
-                                <div className="flex justify-start items-center gap-2">
+                            <div className="w-full text-start">
+                                <div className="flex justify-start items-center gap-2 mb-2">
                                     <Image
                                         src={
                                             (auth.currentUser
@@ -95,9 +100,18 @@ export default function Sidebar() {
                                         await signOut(auth);
                                     }}
                                     type="button"
-                                    className="hover:bg-red-500 transition-all rounded text-xl px-2 py-1">
+                                    className="hover:bg-red-500 transition-all rounded text-lg px-2 py-1">
                                     Log out
                                 </button>
+                                {/* <button
+                                    onClick={async () => {
+                                        setValue(false);
+                                        await signOut(auth);
+                                    }}
+                                    type="button"
+                                    className="hover:bg-orange-300 transition-all rounded text-lg px-2 py-1">
+                                    Sync
+                                </button> */}
                             </div>
                         ) : (
                             <button
@@ -107,7 +121,34 @@ export default function Sidebar() {
                                     setValue(false);
                                     let user = await signInWithGoogle();
                                     if (typeof user === "object") {
-                                        user = user as User;
+                                        setLoading(true);
+                                        try {
+                                            let ent = await entries();
+                                            ent.forEach(
+                                                async ([key, value]) => {
+                                                    user = user as User;
+                                                    await setDoc(
+                                                        doc(
+                                                            firestoreDb,
+                                                            "users",
+                                                            user.uid,
+                                                            `schedules`,
+                                                            md5(key.toString())
+                                                        ),
+                                                        value,
+                                                        { merge: true }
+                                                    );
+                                                }
+                                            );
+                                            setLoading(false);
+                                        } catch (error) {
+                                            setLoading(false);
+                                            console.log(
+                                                "Error syncing schedules: " +
+                                                    error
+                                            );
+                                        }
+                                        setLoading(false);
                                     }
                                 }}>
                                 <FcGoogle /> Sign In/Up

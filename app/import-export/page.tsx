@@ -6,6 +6,7 @@ import { entries, setMany, clear } from "idb-keyval";
 import md5 from "md5";
 import { z } from "zod";
 import React from "react";
+import { useLoader } from "@/contexts/LoaderContext";
 
 const schemaType = z.tuple([
     z.string(),
@@ -16,9 +17,8 @@ const schemaType = z.tuple([
     }),
 ]);
 
-const schemaArrayType = z.array(schemaType);
-
 export default function Import_Export() {
+    const { setLoading } = useLoader();
     return (
         <div className="p-3">
             <h1 className="text-3xl font-bold mb-3">Import/Export</h1>
@@ -59,6 +59,7 @@ proceed with "Ok" button`
                                     await setMany(json);
 
                                     if (auth.currentUser) {
+                                        setLoading(true);
                                         for (let schedule of json) {
                                             try {
                                                 schedule =
@@ -79,6 +80,7 @@ proceed with "Ok" button`
                                                     { merge: true }
                                                 );
                                             } catch (error: any) {
+                                                setLoading(false);
                                                 alert(
                                                     "A certain schedule have problem or the file is corrupted.\nMESSAGE: " +
                                                         JSON.parse(
@@ -88,6 +90,7 @@ proceed with "Ok" button`
                                                 console.warn(error.message);
                                             }
                                         }
+                                        setLoading(false);
                                     }
                                     alert(`Added ${json.length} schedules`);
                                 } catch (error: any) {
