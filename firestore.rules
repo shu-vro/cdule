@@ -3,10 +3,10 @@ service cloud.firestore {
     allow read, write: if false;
     
     match /users/{userId}/schedules/{timeHash} {
-      allow read:  if checkValidity() && 
+      allow read, delete:  if checkValidity() && 
                       isVerifiedUser(userId) && 
                       hasVerifiedEmail();
-      allow write: if checkValidity() && 
+      allow create, update: if checkValidity() && 
                       isVerifiedUser(userId) && 
                       hasVerifiedEmail() &&
                       additionalWritePermission(userId);
@@ -31,3 +31,5 @@ function additionalWritePermission(userId) {
           request.resource.data.cause is string &&
           request.resource.data.amount is number;
 }
+
+// firebase deploy --only firestore:rules
