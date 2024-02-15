@@ -1,7 +1,14 @@
 "use client";
 
 import { auth, firestoreDb } from "@/firebase";
-import { doc, setDoc } from "firebase/firestore";
+import {
+    doc,
+    setDoc,
+    getDocs,
+    query,
+    collection,
+    deleteDoc,
+} from "firebase/firestore";
 import { entries, setMany, clear } from "idb-keyval";
 import md5 from "md5";
 import { z } from "zod";
@@ -60,6 +67,19 @@ proceed with "Ok" button`
 
                                     if (auth.currentUser) {
                                         setLoading(true);
+                                        const docs = await getDocs(
+                                            query(
+                                                collection(
+                                                    firestoreDb,
+                                                    "users",
+                                                    auth.currentUser.uid,
+                                                    "schedules"
+                                                )
+                                            )
+                                        );
+                                        docs.forEach(async doc => {
+                                            await deleteDoc(doc.ref);
+                                        });
                                         for (let schedule of json) {
                                             try {
                                                 schedule =

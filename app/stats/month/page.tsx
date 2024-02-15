@@ -3,13 +3,15 @@
 import React, { useEffect, useState } from "react";
 import { Chart, registerables } from "chart.js";
 import { entries } from "idb-keyval";
-import { MONTHS, chartJs, getDatesInMonth } from "@/lib/utils";
+import { chartJs, getDatesInMonth } from "@/lib/utils";
+import { useRefreshControl } from "@/contexts/RefreshControlContext";
 Chart.register(...registerables);
 
 export default function Stats_Months() {
     const [schedules, setSchedules] = useState<any[]>([]);
     const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+    const { refreshControl } = useRefreshControl();
 
     const changeMonth = async (month: number, year: number) => {
         let ent = await entries();
@@ -45,7 +47,7 @@ export default function Stats_Months() {
             const currentYear = today.getFullYear();
             await changeMonth(currentMonth, currentYear);
         })();
-    }, []);
+    }, [refreshControl]);
     useEffect(() => {
         if (!schedules.length) {
             return;

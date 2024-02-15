@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Chart, registerables } from "chart.js";
 import { entries } from "idb-keyval";
 import { chartJs, convertTimeToAM_PM } from "@/lib/utils";
+import { useRefreshControl } from "@/contexts/RefreshControlContext";
 Chart.register(...registerables);
 
 export default function Stats() {
@@ -11,6 +12,7 @@ export default function Stats() {
     const [selectedDate, setSelectedDate] = useState(
         new Date().toLocaleDateString("en-CA")
     );
+    const { refreshControl } = useRefreshControl();
 
     const changeDate = async (date: string) => {
         let ent: [IDBValidKey, ISchedule][] = await entries();
@@ -37,7 +39,7 @@ export default function Stats() {
         (async () => {
             await changeDate(new Date().toLocaleDateString(`en-US`));
         })();
-    }, []);
+    }, [refreshControl]);
     useEffect(() => {
         (async () => {
             await changeDate(selectedDate);

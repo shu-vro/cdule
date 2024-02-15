@@ -5,9 +5,11 @@ import { entries } from "idb-keyval";
 import { getDatesInMonth } from "@/lib/utils";
 import Total from "../Total";
 import Link from "next/link";
+import { useRefreshControl } from "@/contexts/RefreshControlContext";
 
 export default function Month() {
     const [schedules, setSchedules] = useState<any[]>([]);
+    const { refreshControl } = useRefreshControl();
 
     useEffect(() => {
         (async () => {
@@ -33,7 +35,7 @@ export default function Month() {
             }
             setSchedules(storage);
         })();
-    }, []);
+    }, [refreshControl]);
 
     return (
         <div className="p-3 bg-inherit">

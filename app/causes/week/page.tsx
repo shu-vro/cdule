@@ -6,12 +6,15 @@ import React, { useEffect, useState } from "react";
 import DisplayCause from "../DisplayCause";
 import { DaysOfWeek } from "@/lib/utils";
 import Total from "@/app/Total";
+import { useRefreshControl } from "@/contexts/RefreshControlContext";
 
 export default function Causes_Week() {
     const [data, setData] = useState<{
         [x: string]: [IDBValidKey, ISchedule][];
     }>({});
     const [total, setTotal] = useState(0);
+    const { refreshControl } = useRefreshControl();
+
     useEffect(() => {
         const daysOfWeek = DaysOfWeek();
         (async () => {
@@ -27,7 +30,7 @@ export default function Causes_Week() {
                 }, 0)
             );
         })();
-    }, []);
+    }, [refreshControl]);
 
     return (
         <div>

@@ -17,19 +17,6 @@ export default function CustomSelect({
         HTMLInputElement
     >
 >) {
-    // const allOptions = [
-    //     "WWW-Authenticate",
-
-    //     "Authorization",
-
-    //     "Proxy-Authenticate",
-
-    //     "Proxy-Authorization",
-
-    //     "Age",
-
-    //     "Cache-Control",
-    // ];
     const inputRef = useRef<HTMLInputElement>(null);
     const optionsRef = useRef<HTMLDivElement>(null);
     const [selectedValue, setSelectedValue] = useState(0);

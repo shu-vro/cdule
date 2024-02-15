@@ -5,6 +5,7 @@ import { groupBy } from "lodash";
 import React, { useEffect, useState } from "react";
 import DisplayCause from "../DisplayCause";
 import Total from "@/app/Total";
+import { useRefreshControl } from "@/contexts/RefreshControlContext";
 
 export default function Causes_Week() {
     const [data, setData] = useState<{
@@ -13,6 +14,7 @@ export default function Causes_Week() {
     const [total, setTotal] = useState(0);
     const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+    const { refreshControl } = useRefreshControl();
 
     const handleChangeMonth = async (month: number, year: number) => {
         let ent = await entries();
@@ -41,7 +43,7 @@ export default function Causes_Week() {
             const currentYear = today.getFullYear();
             await handleChangeMonth(currentMonth, currentYear);
         })();
-    }, []);
+    }, [refreshControl]);
     useEffect(() => {
         (async () => {
             await handleChangeMonth(selectedMonth, selectedYear);

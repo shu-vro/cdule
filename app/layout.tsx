@@ -8,6 +8,7 @@ import TopBar from "./TopBar";
 import favicon from "./favicon.ico";
 import Loader from "./Loader";
 import LoaderContext from "@/contexts/LoaderContext";
+import RefreshContext from "@/contexts/RefreshControlContext";
 
 const font = Montserrat({
     subsets: ["latin", "latin-ext"],
@@ -76,14 +77,16 @@ export default function RootLayout({
                 />
             </head>
             <body className={font.className}>
-                <LoaderContext>
-                    <NavbarContext>
-                        <TopBar />
-                        <Sidebar />
-                        {children}
-                        <Loader />
-                    </NavbarContext>
-                </LoaderContext>
+                <RefreshContext>
+                    <LoaderContext>
+                        <NavbarContext>
+                            <TopBar />
+                            <Sidebar />
+                            {children}
+                            <Loader />
+                        </NavbarContext>
+                    </LoaderContext>
+                </RefreshContext>
             </body>
         </html>
     );

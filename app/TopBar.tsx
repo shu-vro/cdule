@@ -9,11 +9,13 @@ import { GoDesktopDownload } from "react-icons/go";
 import { LuPrinter } from "react-icons/lu";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, firestoreDb } from "@/firebase";
-import { collection, onSnapshot } from "firebase/firestore";
+import { Unsubscribe, collection, onSnapshot } from "firebase/firestore";
 import { set } from "idb-keyval";
+import { useRefreshControl } from "@/contexts/RefreshControlContext";
 
 export default function TopBar() {
     const { setValue } = useNavbar();
+    const { setRefreshControl } = useRefreshControl();
     const [deferredPrompt, setDeferredPrompt] =
         useState<BeforeInstallPromptEvent>();
 
@@ -22,20 +24,28 @@ export default function TopBar() {
             setDeferredPrompt(e as BeforeInstallPromptEvent);
         });
 
+        let unsubscribe: Unsubscribe | undefined;
+
         onAuthStateChanged(auth, user => {
             if (user) {
                 console.log("user signed in");
-                onSnapshot(
+                unsubscribe = onSnapshot(
                     collection(firestoreDb, "users", user.uid, "schedules"),
                     snapshot => {
                         snapshot.forEach(async doc => {
                             const data = doc.data() as ISchedule;
                             await set(data.time, data);
                         });
+                        setRefreshControl(prev => prev + 1);
                     }
                 );
             }
         });
+        return () => {
+            if (typeof unsubscribe === "function") {
+                unsubscribe();
+            }
+        };
     }, []);
 
     return (

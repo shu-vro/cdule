@@ -4,10 +4,12 @@ import React, { useEffect, useState } from "react";
 import { Chart, registerables } from "chart.js";
 import { entries } from "idb-keyval";
 import { DaysOfWeek, chartJs } from "@/lib/utils";
+import { useRefreshControl } from "@/contexts/RefreshControlContext";
 Chart.register(...registerables);
 
 export default function Week_Stats() {
     const [schedules, setSchedules] = useState<any[]>([]);
+    const { refreshControl } = useRefreshControl();
 
     useEffect(() => {
         (async () => {
@@ -32,7 +34,7 @@ export default function Week_Stats() {
             }
             setSchedules(storage);
         })();
-    }, []);
+    }, [refreshControl]);
     useEffect(() => {
         if (!schedules.length) {
             return;

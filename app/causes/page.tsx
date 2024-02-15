@@ -6,6 +6,7 @@ import { entries } from "idb-keyval";
 import DisplayCause from "./DisplayCause";
 import { useSearchParams } from "next/navigation";
 import Total from "../Total";
+import { useRefreshControl } from "@/contexts/RefreshControlContext";
 
 export default function Causes() {
     const searchParams = useSearchParams();
@@ -18,6 +19,7 @@ export default function Causes() {
             "en-CA"
         )
     );
+    const { refreshControl } = useRefreshControl();
 
     const handleDateChange = async (date: string | number) => {
         let ent: [IDBValidKey, ISchedule][] = await entries();
@@ -40,7 +42,7 @@ export default function Causes() {
         (async () => {
             await handleDateChange(searchParams.get(`date`) || Date.now());
         })();
-    }, []);
+    }, [refreshControl]);
 
     useEffect(() => {
         (async () => {

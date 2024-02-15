@@ -2,9 +2,15 @@
     "cSpell.words": [
         "beforeinstallprompt",
         "CDULE",
+        "firestore",
         "keyval",
         "launchericon",
         "registerables",
         "unoptimized"
-    ]
+    ],
+    "files.associations": {
+        "*.css": "tailwindcss",
+        "*.rules": "plaintext",
+        "iostream": "cpp"
+    }
 }

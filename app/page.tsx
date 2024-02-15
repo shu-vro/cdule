@@ -9,6 +9,7 @@ import Total from "./Total";
 import { deleteDoc, doc, setDoc } from "firebase/firestore";
 import { auth, firestoreDb } from "@/firebase";
 import md5 from "md5";
+import { useRefreshControl } from "@/contexts/RefreshControlContext";
 
 export default function Home() {
     const [newField, setNewField] = useState(false);
@@ -22,7 +23,7 @@ export default function Home() {
     const [cause, setCause] = useState<string>("");
     const [amount, setAmount] = useState<number>(0);
     const [schedules, setSchedules] = useState<[IDBValidKey, ISchedule][]>([]);
-    const [refreshControl, setRefreshControl] = useState(0);
+    const { refreshControl, setRefreshControl } = useRefreshControl();
     const [allCauses, setAllCauses] = useState<ISchedule["cause"][]>([]);
 
     useEffect(() => {

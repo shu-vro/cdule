@@ -5,9 +5,11 @@ import { entries } from "idb-keyval";
 import { DaysOfWeek } from "@/lib/utils";
 import Total from "../Total";
 import Link from "next/link";
+import { useRefreshControl } from "@/contexts/RefreshControlContext";
 
 export default function Week() {
     const [schedules, setSchedules] = useState<any[]>([]);
+    const { refreshControl } = useRefreshControl();
 
     useEffect(() => {
         (async () => {
@@ -32,7 +34,7 @@ export default function Week() {
             }
             setSchedules(storage);
         })();
-    }, []);
+    }, [refreshControl]);
 
     return (
         <div className="p-3 bg-inherit">
