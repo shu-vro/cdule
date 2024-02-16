@@ -1,3 +1,5 @@
+rules_version = '2';
+
 service cloud.firestore {
   match /databases/{database}/documents {
     allow read, write: if false;
@@ -31,5 +33,6 @@ function additionalWritePermission(userId) {
           request.resource.data.cause is string &&
           request.resource.data.amount is number;
 }
+
 
 // firebase deploy --only firestore:rules

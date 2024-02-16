@@ -9,6 +9,8 @@ import favicon from "./favicon.ico";
 import Loader from "./Loader";
 import LoaderContext from "@/contexts/LoaderContext";
 import RefreshContext from "@/contexts/RefreshControlContext";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const font = Montserrat({
     subsets: ["latin", "latin-ext"],
@@ -87,6 +89,8 @@ export default function RootLayout({
                         </NavbarContext>
                     </LoaderContext>
                 </RefreshContext>
+                <Analytics />
+                <SpeedInsights />
             </body>
         </html>
     );

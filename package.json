@@ -1,6 +1,6 @@
 {
     "name": "cdule",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "private": true,
     "scripts": {
         "dev": "next dev --turbo",
@@ -10,6 +10,8 @@
     },
     "dependencies": {
         "@ducanh2912/next-pwa": "^10.0.2",
+        "@vercel/analytics": "^1.1.4",
+        "@vercel/speed-insights": "^1.0.10",
         "babel-loader": "^9.1.3",
         "chart.js": "^4.4.1",
         "clsx": "^2.1.0",

@@ -21,7 +21,16 @@ export default function DisplayCause({
                     {schedules.map(([key, value]) => {
                         return (
                             <tr key={key as string}>
-                                <td className="w-1/2">{value.time}</td>
+                                <td className="w-1/2">
+                                    {new Date(value.time).toLocaleDateString(
+                                        "en-GB",
+                                        {
+                                            day: "2-digit",
+                                            month: "2-digit",
+                                            year: "numeric",
+                                        }
+                                    )}
+                                </td>
                                 <td className="w-1/2">
                                     {value.amount}
                                     <span className="ml-2">৳</span>

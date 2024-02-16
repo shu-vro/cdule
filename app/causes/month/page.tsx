@@ -68,7 +68,7 @@ export default function Causes_Week() {
                 />
             </h1>
             {Object.entries(data).map(([cause, schedule]) => (
-                <DisplayCause cause={cause} schedules={schedule} />
+                <DisplayCause cause={cause} schedules={schedule} key={cause} />
             ))}
             <Total>{total}</Total>
         </div>
