@@ -12,11 +12,14 @@ import { auth, firestoreDb } from "@/firebase";
 import {
     Unsubscribe,
     collection,
-    getCountFromServer,
+    doc,
     onSnapshot,
+    setDoc,
 } from "firebase/firestore";
-import { set, keys } from "idb-keyval";
+import { setMany, values } from "idb-keyval";
 import { useRefreshControl } from "@/contexts/RefreshControlContext";
+import { xorWith, isEqual } from "lodash";
+import md5 from "md5";
 
 export default function TopBar() {
     const { setValue } = useNavbar();
@@ -40,16 +43,48 @@ export default function TopBar() {
                     "schedules"
                 );
 
-                const serverCount = (await getCountFromServer(q)).data().count;
-                const currentCount = (await keys()).length;
-                if (serverCount !== currentCount) {
-                    unsubscribe = onSnapshot(q, snapshot => {
-                        snapshot.forEach(async doc => {
-                            const data = doc.data() as ISchedule;
-                            await set(data.time, data);
-                        });
-                        setRefreshControl(prev => prev + 1);
+                unsubscribe = onSnapshot(q, async snapshot => {
+                    let all_data_from_server: ISchedule[] = [];
+                    snapshot.forEach(async doc => {
+                        const data = doc.data() as ISchedule;
+                        all_data_from_server.push(data);
                     });
+
+                    await setMany(
+                        all_data_from_server.map(data => {
+                            return [data.time, data];
+                        })
+                    );
+
+                    const all_data_from_idb = await values();
+                    const intersection: ISchedule[] = xorWith(
+                        all_data_from_idb,
+                        all_data_from_server,
+                        isEqual
+                    );
+
+                    intersection.forEach(async data => {
+                        try {
+                            await setDoc(
+                                doc(
+                                    firestoreDb,
+                                    "users",
+                                    user.uid,
+                                    `schedules`,
+                                    md5(data.time.toString())
+                                ),
+                                data,
+                                { merge: true }
+                            );
+                        } catch (error) {
+                            console.warn(error);
+                        }
+                    });
+                    setRefreshControl(prev => prev + 1);
+                });
+            } else {
+                if (typeof unsubscribe === "function") {
+                    unsubscribe();
                 }
             }
         });

@@ -120,36 +120,6 @@ export default function Sidebar() {
                                 onClick={async () => {
                                     setValue(false);
                                     let user = await signInWithGoogle();
-                                    if (typeof user === "object") {
-                                        setLoading(true);
-                                        try {
-                                            let ent = await entries();
-                                            ent.forEach(
-                                                async ([key, value]) => {
-                                                    user = user as User;
-                                                    await setDoc(
-                                                        doc(
-                                                            firestoreDb,
-                                                            "users",
-                                                            user.uid,
-                                                            `schedules`,
-                                                            md5(key.toString())
-                                                        ),
-                                                        value,
-                                                        { merge: true }
-                                                    );
-                                                }
-                                            );
-                                            setLoading(false);
-                                        } catch (error) {
-                                            setLoading(false);
-                                            console.log(
-                                                "Error syncing schedules: " +
-                                                    error
-                                            );
-                                        }
-                                        setLoading(false);
-                                    }
                                 }}>
                                 <FcGoogle /> Sign In/Up
                             </button>
