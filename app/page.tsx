@@ -20,6 +20,10 @@ export default function Home() {
             hour12: false,
         })
     );
+
+    const [selectedDate, setSelectedDate] = useState(
+        new Date().toLocaleDateString("en-CA")
+    );
     const [cause, setCause] = useState<string>("");
     const [amount, setAmount] = useState<number>(0);
     const [schedules, setSchedules] = useState<[IDBValidKey, ISchedule][]>([]);
@@ -48,7 +52,15 @@ export default function Home() {
     return (
         <div className="p-3 bg-inherit">
             <div className="font-bold text-3xl flex justify-between items-center flex-row">
-                TODAY
+                <input
+                    type="date"
+                    className="bg-inherit"
+                    value={selectedDate}
+                    onChange={e => {
+                        console.log(e.target.value);
+                        setSelectedDate(e.target.value);
+                    }}
+                />
                 <button
                     onClick={() => {
                         document.body.scrollTo({
@@ -123,10 +135,9 @@ export default function Home() {
                                 <button
                                     onClick={async () => {
                                         setNewField(false);
-                                        let today =
-                                            new Date().toLocaleDateString(
-                                                "en-US"
-                                            );
+                                        let today = new Date(
+                                            selectedDate
+                                        ).toLocaleDateString("en-US");
                                         await set(`${today} ${time}`, {
                                             time: `${today} ${time}`,
                                             cause,
