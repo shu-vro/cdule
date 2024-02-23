@@ -43,11 +43,13 @@ export default function Home() {
             ent = ent.filter(el => {
                 return el[0]
                     .toString()
-                    .startsWith(new Date().toLocaleDateString("en-US"));
+                    .startsWith(
+                        new Date(selectedDate).toLocaleDateString("en-US")
+                    );
             });
             setSchedules(ent);
         })();
-    }, [refreshControl]);
+    }, [refreshControl, selectedDate]);
 
     return (
         <div className="p-3 bg-inherit">
