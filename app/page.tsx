@@ -7,11 +7,13 @@ import { RiDeleteBin6Fill } from "react-icons/ri";
 import CustomSelect from "./CustomSelect";
 import Total from "./Total";
 import { deleteDoc, doc, setDoc } from "firebase/firestore";
-import { auth, firestoreDb } from "@/firebase";
+import { firestoreDb } from "@/firebase";
 import md5 from "md5";
 import { useRefreshControl } from "@/contexts/RefreshControlContext";
+import { useAuthContext } from "@/contexts/AuthContext";
 
 export default function Home() {
+    const { user } = useAuthContext();
     const [newField, setNewField] = useState(false);
     const [time, setTime] = useState<string>(
         new Date().toLocaleTimeString("en-US", {
@@ -140,6 +142,7 @@ export default function Home() {
                                         let today = new Date(
                                             selectedDate
                                         ).toLocaleDateString("en-US");
+
                                         await set(`${today} ${time}`, {
                                             time: `${today} ${time}`,
                                             cause,
@@ -148,7 +151,7 @@ export default function Home() {
                                         setRefreshControl(prev => prev + 1);
 
                                         try {
-                                            if (auth.currentUser) {
+                                            if (user) {
                                                 const id = md5(
                                                     `${today} ${time}`
                                                 );
@@ -156,7 +159,7 @@ export default function Home() {
                                                     doc(
                                                         firestoreDb,
                                                         "users",
-                                                        auth.currentUser.uid,
+                                                        user.uid,
                                                         `schedules`,
                                                         id
                                                     ),
@@ -204,13 +207,12 @@ export default function Home() {
                                             onClick={async () => {
                                                 try {
                                                     await del(key);
-                                                    if (auth.currentUser) {
+                                                    if (user) {
                                                         await deleteDoc(
                                                             doc(
                                                                 firestoreDb,
                                                                 "users",
-                                                                auth.currentUser
-                                                                    .uid,
+                                                                user.uid,
                                                                 `schedules`,
                                                                 md5(
                                                                     key as string

@@ -119,6 +119,8 @@ proceed with "Ok" button`
                                         `THIS FILE IS CORRUPTED. FAILED:\n` +
                                             error.message
                                     );
+                                } finally {
+                                    setLoading(false);
                                 }
                             });
                             reader.readAsText(file);

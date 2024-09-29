@@ -11,6 +11,7 @@ import LoaderContext from "@/contexts/LoaderContext";
 import RefreshContext from "@/contexts/RefreshControlContext";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import AuthContext from "@/contexts/AuthContext";
 
 const font = Montserrat({
     subsets: ["latin", "latin-ext"],
@@ -80,17 +81,19 @@ export default function RootLayout({
             </head>
             <body className={font.className}>
                 <RefreshContext>
-                    <LoaderContext>
-                        <NavbarContext>
-                            <TopBar />
-                            <Sidebar />
-                            {children}
-                            <Loader />
-                        </NavbarContext>
-                    </LoaderContext>
+                    <AuthContext>
+                        <LoaderContext>
+                            <NavbarContext>
+                                <TopBar />
+                                <Sidebar />
+                                {children}
+                                <Loader />
+                            </NavbarContext>
+                        </LoaderContext>
+                    </AuthContext>
                 </RefreshContext>
-                <Analytics />
-                <SpeedInsights />
+                {/* <Analytics />
+                <SpeedInsights /> */}
             </body>
         </html>
     );

@@ -1,21 +1,18 @@
 "use client";
 
 import { useNavbar } from "@/contexts/NavbarContext";
-import { auth, firestoreDb, signInWithGoogle } from "@/firebase";
+import { auth, signInWithGoogle } from "@/firebase";
 import { cn } from "@/lib/utils";
 import { User, signOut } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
 import { FaAngleLeft } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
-import { entries } from "idb-keyval";
-import md5 from "md5";
-import { useLoader } from "@/contexts/LoaderContext";
+import { useAuthContext } from "@/contexts/AuthContext";
 
 export default function Sidebar() {
     const { value, setValue } = useNavbar();
-    const { setLoading } = useLoader();
+    const { user } = useAuthContext();
     const list = [
         {
             name: "today",
@@ -74,24 +71,20 @@ export default function Sidebar() {
                         </li>
                     ))}
                     <li className="px-3 py-2 bg-neutral-600 hover:bg-sky-500 transition-all my-1 mx-2 rounded capitalize">
-                        {auth.currentUser ? (
+                        {user ? (
                             <div className="w-full text-start">
                                 <div className="flex justify-start items-center gap-2 mb-2">
                                     <Image
                                         src={
-                                            (auth.currentUser
-                                                ?.photoURL as string) ||
+                                            (user?.photoURL as string) ||
                                             "https://cdn-icons-png.flaticon.com/512/10337/10337609.png"
                                         }
-                                        alt={
-                                            auth.currentUser
-                                                ?.displayName as string
-                                        }
+                                        alt={user?.displayName as string}
                                         width={20}
                                         height={20}
                                     />
                                     <span className="text-sm truncate">
-                                        {auth.currentUser.displayName}
+                                        {user?.displayName}
                                     </span>
                                 </div>
                                 <button
