@@ -49,16 +49,17 @@ export default function AuthContext({
 
                     console.log(all_data_from_server.length);
 
-                    await setMany(
-                        all_data_from_server.map(data => {
-                            return [data.time, data];
-                        })
-                    );
                     const all_data_from_idb = await values();
                     const intersection: ISchedule[] = xorWith(
                         all_data_from_idb,
                         all_data_from_server,
                         isEqual
+                    );
+
+                    await setMany(
+                        intersection.map(data => {
+                            return [data.time, data];
+                        })
                     );
 
                     intersection.forEach(async data => {
