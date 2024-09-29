@@ -92,8 +92,8 @@ export default function RootLayout({
                         </LoaderContext>
                     </AuthContext>
                 </RefreshContext>
-                {/* <Analytics />
-                <SpeedInsights /> */}
+                <Analytics />
+                <SpeedInsights />
             </body>
         </html>
     );
