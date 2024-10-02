@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { groupBy } from "lodash";
 import { entries } from "idb-keyval";
 import DisplayCause from "./DisplayCause";
@@ -8,7 +8,7 @@ import { useSearchParams } from "next/navigation";
 import Total from "../Total";
 import { useRefreshControl } from "@/contexts/RefreshControlContext";
 
-export default function Causes() {
+function Causes() {
     const searchParams = useSearchParams();
     const [data, setData] = useState<{
         [x: string]: [IDBValidKey, ISchedule][];
@@ -68,5 +68,13 @@ export default function Causes() {
             ))}
             <Total>{total}</Total>
         </div>
+    );
+}
+
+export default function CausesPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <Causes />
+        </Suspense>
     );
 }
