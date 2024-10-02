@@ -1,3 +1,5 @@
+"use client";
+
 // Import the functions you need from the SDKs you need
 import { getApps, initializeApp } from "firebase/app";
 import {
@@ -17,13 +19,14 @@ import {
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
+
 const firebaseConfig = {
-    apiKey: "AIzaSyAzsb3HYq6oT3eNMjjT-w6jUSDj-GcEyXQ",
-    authDomain: "c-dule.firebaseapp.com",
-    projectId: "c-dule",
-    storageBucket: "c-dule.appspot.com",
-    messagingSenderId: "574855510160",
-    appId: "1:574855510160:web:597b9e13d64d54c11d8015",
+    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase

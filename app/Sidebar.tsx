@@ -89,8 +89,16 @@ export default function Sidebar() {
                                 </div>
                                 <button
                                     onClick={async () => {
-                                        setValue(false);
-                                        await signOut(auth);
+                                        try {
+                                            setValue(false);
+                                            await signOut(auth);
+                                            // location.reload();
+                                        } catch (e) {
+                                            console.log(
+                                                "error singing out: ",
+                                                e
+                                            );
+                                        }
                                     }}
                                     type="button"
                                     className="hover:bg-red-500 transition-all rounded text-lg px-2 py-1">

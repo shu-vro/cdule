@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { z } from "zod";
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -107,3 +108,11 @@ export const chartJs = {
         };
     },
 };
+
+export const IScheduleSchemaType = z.object({
+    time: z.string(),
+    cause: z.string(),
+    amount: z.number(),
+});
+
+export const schemaType = z.tuple([z.string(), IScheduleSchemaType]);

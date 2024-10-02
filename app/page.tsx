@@ -11,6 +11,7 @@ import { firestoreDb } from "@/firebase";
 import md5 from "md5";
 import { useRefreshControl } from "@/contexts/RefreshControlContext";
 import { useAuthContext } from "@/contexts/AuthContext";
+import { IScheduleSchemaType } from "@/lib/utils";
 
 export default function Home() {
     const { user } = useAuthContext();
@@ -151,6 +152,12 @@ export default function Home() {
                                         setRefreshControl(prev => prev + 1);
 
                                         try {
+                                            const data =
+                                                IScheduleSchemaType.parse({
+                                                    time: `${today} ${time}`,
+                                                    cause,
+                                                    amount,
+                                                });
                                             if (user) {
                                                 const id = md5(
                                                     `${today} ${time}`
@@ -163,11 +170,7 @@ export default function Home() {
                                                         `schedules`,
                                                         id
                                                     ),
-                                                    {
-                                                        time: `${today} ${time}`,
-                                                        cause,
-                                                        amount,
-                                                    },
+                                                    data,
                                                     { merge: true }
                                                 );
                                             }
