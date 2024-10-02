@@ -43,15 +43,3 @@ if (globalThis?.location?.hostname === "localhost") {
     connectAuthEmulator(auth, "http://127.0.0.1:4001");
     connectFirestoreEmulator(firestoreDb, "127.0.0.1", 4002);
 }
-
-export async function signInWithGoogle() {
-    try {
-        let provider = new GoogleAuthProvider();
-        let { user } = await signInWithPopup(auth, provider);
-        return user;
-    } catch (e: any) {
-        console.warn("There was an error at signInWithGoogle", e);
-        await signOut(auth);
-        return e.code as string;
-    }
-}

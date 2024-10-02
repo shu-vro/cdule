@@ -1,14 +1,22 @@
 "use client";
 
 import { useNavbar } from "@/contexts/NavbarContext";
-import { auth, signInWithGoogle } from "@/firebase";
-import { cn } from "@/lib/utils";
-import { User, signOut } from "firebase/auth";
+import { auth, firestoreDb } from "@/firebase";
+import { cn, IScheduleSchemaType } from "@/lib/utils";
+import {
+    GoogleAuthProvider,
+    User,
+    signInWithPopup,
+    signOut,
+} from "firebase/auth";
 import Image from "next/image";
 import Link from "next/link";
 import { FaAngleLeft } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
 import { useAuthContext } from "@/contexts/AuthContext";
+import { values } from "idb-keyval";
+import { doc, writeBatch } from "firebase/firestore";
+import md5 from "md5";
 
 export default function Sidebar() {
     const { value, setValue } = useNavbar();
@@ -120,7 +128,43 @@ export default function Sidebar() {
                                 type="button"
                                 onClick={async () => {
                                     setValue(false);
-                                    let user = await signInWithGoogle();
+                                    try {
+                                        let provider = new GoogleAuthProvider();
+                                        let { user } = await signInWithPopup(
+                                            auth,
+                                            provider
+                                        );
+                                        const idb_values: ISchedule[] =
+                                            await values();
+                                        const batch = writeBatch(firestoreDb);
+
+                                        idb_values.forEach(cdule => {
+                                            const data =
+                                                IScheduleSchemaType.parse(
+                                                    cdule
+                                                );
+                                            const id = md5(data.time);
+                                            const q = doc(
+                                                firestoreDb,
+                                                "users",
+                                                user.uid,
+                                                `schedules`,
+                                                id
+                                            );
+                                            batch.set(q, data, { merge: true });
+                                        });
+                                        await batch.commit().catch(e => {
+                                            console.log(
+                                                "Error synchronizing with server: ",
+                                                e
+                                            );
+                                        });
+                                    } catch (error) {
+                                        console.log(
+                                            "error signing in: ",
+                                            error
+                                        );
+                                    }
                                 }}>
                                 <FcGoogle /> Sign In/Up
                             </button>
