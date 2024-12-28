@@ -16,13 +16,6 @@
         "label": "off"
       }
     ],
-    "compat-api/html": [
-      "default",
-      {
-        "ignore": [
-          "input[type=date]"
-        ]
-      }
-    ]
+    "compat-api/html": "off"
   }
 }
